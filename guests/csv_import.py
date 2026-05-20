@@ -1,11 +1,11 @@
 import csv
-import StringIO
+import io
 import uuid
 from guests.models import Party, Guest
 
 
 def import_guests(path):
-    with open(path, 'rb') as csvfile:
+    with open(path, 'r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         first_row = True
         for row in reader:
@@ -14,7 +14,7 @@ def import_guests(path):
                 continue
             party_name, first_name, last_name, party_type, is_child, category, is_invited, email = row[:8]
             if not party_name:
-                print 'skipping row {}'.format(row)
+                print('skipping row {}'.format(row))
                 continue
             party = Party.objects.get_or_create(name=party_name)[0]
             party.type = party_type
@@ -39,7 +39,7 @@ def export_guests():
         'is_child', 'category', 'is_invited', 'is_attending',
         'rehearsal_dinner', 'meal', 'email', 'comments'
     ]
-    file = StringIO.StringIO()
+    file = io.StringIO()
     writer = csv.writer(file)
     writer.writerow(headers)
     for party in Party.in_default_order():
