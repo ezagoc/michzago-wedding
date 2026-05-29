@@ -35,20 +35,6 @@
                         {% endwith %}
                     </div>
                 </div>
-                {% if not guest.is_child %}
-                <div class="form-group meal-group">
-                    {% with 'meal-'|add:guest.unique_id as meal_label %}
-                    <label class="col-sm-4 control-label">Preferencia de platillo</label>
-                    <div class="col-sm-8">
-                        {% for meal_id, meal_name in meals %}
-                        <label class="radio-inline">
-                            <input type="radio" name="{{ meal_label }}" value="{{ meal_id }}" {% if guest.meal == meal_id %}checked="checked"{% endif %} {% if guest.is_attending == False %}disabled{% endif %}> {{ meal_name }}
-                        </label>
-                        {% endfor %}
-                    </div>
-                    {% endwith %}
-                </div>
-                {% endif %}
                 {% endfor %}
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-4">
