@@ -1,11 +1,8 @@
-from __future__ import unicode_literals
 import datetime
 import uuid
 
 from django.db import models
-from django.dispatch import receiver
 
-# these will determine the default formality of correspondence
 ALLOWED_TYPES = [
     ('formal', 'formal'),
     ('fun', 'fun'),
@@ -18,9 +15,6 @@ def _random_uuid():
 
 
 class Party(models.Model):
-    """
-    A party consists of one or more guests.
-    """
     name = models.TextField()
     type = models.CharField(max_length=10, choices=ALLOWED_TYPES)
     category = models.CharField(max_length=20, null=True, blank=True)
@@ -34,7 +28,7 @@ class Party(models.Model):
     is_attending = models.BooleanField(null=True, default=None)
     comments = models.TextField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Party: {}'.format(self.name)
 
     @classmethod
@@ -51,21 +45,18 @@ class Party(models.Model):
 
     @property
     def guest_emails(self):
-        return filter(None, self.guest_set.values_list('email', flat=True))
+        return list(filter(None, self.guest_set.values_list('email', flat=True)))
 
 
 MEALS = [
-    ('beef', 'cow'),
-    ('fish', 'fish'),
-    ('hen', 'hen'),
-    ('vegetarian', 'vegetable'),
+    ('beef', 'Res'),
+    ('fish', 'Pescado'),
+    ('hen', 'Pollo'),
+    ('vegetarian', 'Vegetariano'),
 ]
 
 
 class Guest(models.Model):
-    """
-    A single guest
-    """
     party = models.ForeignKey(Party, on_delete=models.CASCADE)
     first_name = models.TextField()
     last_name = models.TextField(null=True, blank=True)
@@ -76,12 +67,11 @@ class Guest(models.Model):
 
     @property
     def name(self):
-        return u'{} {}'.format(self.first_name, self.last_name)
+        return '{} {}'.format(self.first_name, self.last_name)
 
     @property
     def unique_id(self):
-        # convert to string so it can be used in the "add" templatetag
-        return unicode(self.pk)
+        return str(self.pk)
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Guest: {} {}'.format(self.first_name, self.last_name)
