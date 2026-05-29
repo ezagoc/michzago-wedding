@@ -1,0 +1,18 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Grupo</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for guest in guest_list %}
+        <tr>
+            <td>{{ guest.name }}</td>
+            <td>{{ guest.party.name }}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="2">Ninguno</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
