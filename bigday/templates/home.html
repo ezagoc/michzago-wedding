@@ -20,6 +20,7 @@
                     <li><a class="page-scroll" href="#main-header">Inicio</a></li>
                     <li><a class="page-scroll" href="#event">Evento</a></li>
                     <li><a class="page-scroll" href="#gifts">Regalos</a></li>
+                    <li><a class="page-scroll" href="#rsvp">RSVP</a></li>
                     <li><a class="page-scroll" href="#contact">Contacto</a></li>
                 </ul>
             </div>
@@ -79,6 +80,22 @@
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         </a>
     </div>
+    <section id="rsvp" class="bg-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 text-center">
+                    <h2 class="section-heading">RSVP</h2>
+                    <hr>
+                    <p>Ingresa el código que te enviamos para confirmar tu asistencia.</p>
+                    <div class="rsvp-lookup">
+                        <input type="text" id="rsvp-code" class="form-control rsvp-input" placeholder="Tu código de invitación">
+                        <p id="rsvp-error" class="rsvp-error" style="display:none;">Por favor ingresa tu código de invitación.</p>
+                        <button onclick="goToInvite()" class="btn btn-rsvp">Ir a mi invitación</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     {% include 'partials/event.html' %}
     <section id="gifts">
         {% include 'partials/gifts.html' %}
@@ -124,4 +141,19 @@
     <script src="{% static 'creative/js/jquery.easing.min.js' %}"></script>
     <script src="{% static 'creative/js/jquery.fittext.js' %}"></script>
     <script src="{% static 'creative/js/creative.js' %}"></script>
+    <script>
+    function goToInvite() {
+        var code = document.getElementById('rsvp-code').value.trim();
+        var error = document.getElementById('rsvp-error');
+        if (!code) {
+            error.style.display = 'block';
+            return;
+        }
+        error.style.display = 'none';
+        window.location.href = '/invite/' + code + '/';
+    }
+    document.getElementById('rsvp-code').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') goToInvite();
+    });
+    </script>
 {% endblock %}
